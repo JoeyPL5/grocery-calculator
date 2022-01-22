@@ -40,6 +40,7 @@ def initialPayments():
         amount_payed[index] += cost
 
 
+# takes in input for items only part of the group purchased
 def partialPayments():
     print("Input an item that isn't for the whole group...\n Format: Cost Name1 Name2... \n Examples: (a) 10.35 "
           "Joey \n (b) 45.1 Ethan Andrew Joe \n"
@@ -67,6 +68,7 @@ def partialPayments():
                 pass
 
 
+# calculates the cost of the items purchased as a group
 def groupPayments():
     total_payed = sumList(amount_payed)
     total_owed = sumList(amount_owed)
@@ -76,6 +78,7 @@ def groupPayments():
         amount_owed[i] += marginal_cost
 
 
+# adds every element of a number list
 def sumList(num_list):
     total = 0
     for num in num_list:
@@ -83,14 +86,37 @@ def sumList(num_list):
     return total
 
 
+# prints the final amounts each person pays and owes
 def finalAmounts():
+    print("")
     for i in range(num_buyers):
         payed = amount_payed[i]
         owed = amount_owed[i]
         if payed > owed:
-            print(buyers[i] + " receives $" + str(round(abs(payed - owed), 2)) + "\n")
+            print(buyers[i] + " receives $" + str(round(abs(payed - owed), 2)))
         else:
-            print(buyers[i] + " owes $" + str(round(abs(payed - owed), 2)) + "\n")
+            print(buyers[i] + " owes $" + str(round(abs(payed - owed), 2)))
+    print("")
+
+
+# prints how much each person should venmo
+def venmoAmounts():
+    balances = []
+    venmos = []
+    for i in range(num_buyers):
+        balances.append(round(amount_payed[i] - amount_owed[i], 2))
+    for i in range(num_buyers):
+        j = 0
+        while balances[i] > 0:
+            if not i == j:
+                if balances[j] < 0:
+                    amount_to_venmo = min(abs(balances[i]), abs(balances[j]))
+                    venmos.append(buyers[j] + " venmos " + buyers[i] + " $" + str(amount_to_venmo))
+                    balances[i] -= amount_to_venmo
+                    balances[j] += amount_to_venmo
+            j += 1
+    for message in venmos:
+        print(message)
 
 
 who_bought = input("Who bought groceries? (spaces between names)\n")
@@ -104,3 +130,4 @@ initialPayments()
 partialPayments()
 groupPayments()
 finalAmounts()
+venmoAmounts()
