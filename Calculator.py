@@ -107,7 +107,7 @@ def venmoAmounts():
         balances.append(round(amount_payed[i] - amount_owed[i], 2))
     for i in range(num_buyers):
         j = 0
-        while balances[i] > 0:
+        while balances[i] > 0 and j < num_buyers:
             if not i == j:
                 if balances[j] < 0:
                     amount_to_venmo = min(abs(balances[i]), abs(balances[j]))
